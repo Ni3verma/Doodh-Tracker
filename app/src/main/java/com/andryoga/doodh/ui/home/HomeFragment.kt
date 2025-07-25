@@ -1,9 +1,12 @@
 package com.andryoga.doodh.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.andryoga.doodh.MyApplication
@@ -50,6 +53,7 @@ class HomeFragment : Fragment() {
 
         binding.calendar.date
         binding.save.setOnClickListener {
+            hideKeyboard()
             homeViewModel.onSaveClick(
                 binding.qty.text.toString().toDouble()
             )
@@ -65,5 +69,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireActivity().currentFocus?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

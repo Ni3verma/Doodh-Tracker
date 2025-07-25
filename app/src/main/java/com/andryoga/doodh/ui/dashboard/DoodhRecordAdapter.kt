@@ -33,7 +33,7 @@ class DoodhRecordAdapter :
 
         fun bind(doodhRecord: DoodhEntity) {
             val calendar = Calendar.getInstance().apply {
-                set(doodhRecord.year, doodhRecord.month - 1, doodhRecord.day)
+                set(doodhRecord.year, doodhRecord.month, doodhRecord.day)
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
                 set(Calendar.SECOND, 0)

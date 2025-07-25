@@ -25,12 +25,6 @@ class DashboardViewModel(
             _yearItems.postValue(
                 doodhDao.getAllDistinctYears()
             )
-
-            val calendar = Calendar.getInstance()
-            getRecords(
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR)
-            )
         }
     }
 

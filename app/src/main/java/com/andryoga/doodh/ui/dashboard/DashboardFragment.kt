@@ -34,11 +34,12 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+//        binding.monthTv.setText(
+//            Constants.MONTH_TEXT[Calendar.getInstance().get(Calendar.MONTH)],
+//            false
+//        )
         binding.monthTv.setSimpleItems(Constants.MONTH_TEXT)
-        binding.monthTv.setText(
-            Constants.MONTH_TEXT[Calendar.getInstance().get(Calendar.MONTH)],
-            false
-        )
+
         binding.yearTv.setText(Calendar.getInstance().get(Calendar.YEAR).toString(), false)
 
         binding.records.adapter = recordAdapter
@@ -65,6 +66,12 @@ class DashboardFragment : Fragment() {
             binding.totalQty.text = "Total Qty: ${records.sumOf { it.qty }} Litres"
             recordAdapter.submitList(records)
         }
+
+        val calendar = Calendar.getInstance()
+        dashboardViewModel.getRecords(
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.YEAR)
+        )
 
         return root
     }

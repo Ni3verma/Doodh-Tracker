@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,10 +30,10 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/qty"
         app:layout_constraintBottom_toBottomOf="@id/qty"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="359dp" />
+        />
 
     <EditText
         android:id="@+id/qty"
@@ -38,9 +43,9 @@
         android:text="2.5"
         app:layout_constraintTop_toBottomOf="@id/calendar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toEndOf="@+id/litres_tv"
-        tools:layout_editor_absoluteY="346dp" />
+         />
 
     <Button
         android:id="@+id/save"
@@ -48,7 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="save"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qty" />
+        app:layout_constraintTop_toTopOf="@id/qty"
+        app:layout_constraintBottom_toBottomOf="@id/qty"
+        app:layout_constraintStart_toEndOf="@id/qty"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
