@@ -2,8 +2,6 @@ package com.andryoga.doodh.data.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "doodh", primaryKeys = ["day", "month", "year"])
 data class DoodhEntity(

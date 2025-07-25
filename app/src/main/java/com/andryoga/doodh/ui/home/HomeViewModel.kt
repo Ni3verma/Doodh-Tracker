@@ -37,10 +37,11 @@ class HomeViewModel(
             }
         }
     }
+
     fun onSaveClick(qty: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             val date = _currentSelectedDate.value!!
-            doodhDao.insertDoodhRecord(DoodhEntity( date.day, date.month, date.year,qty))
+            doodhDao.insertDoodhRecord(DoodhEntity(date.day, date.month, date.year, qty))
         }
     }
 
@@ -49,7 +50,7 @@ class HomeViewModel(
     }
 }
 
-class HomeViewModelFactory(private val doodhDao: DoodhDao): ViewModelProvider.Factory {
+class HomeViewModelFactory(private val doodhDao: DoodhDao) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {

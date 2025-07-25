@@ -5,8 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
-import java.util.Date
 
 @Dao
 interface DoodhDao {
@@ -20,5 +18,8 @@ interface DoodhDao {
     fun getAllDoodhRecords(): Flow<List<DoodhEntity>>
 
     @Query("SELECT * FROM doodh WHERE month = :month AND year = :year ORDER BY day ASC")
-    fun getDoodhRecordsForMonth(month: Int, year: Int): Flow<List<DoodhEntity>>
+    fun getDoodhRecordsForMonth(month: Int, year: Int): List<DoodhEntity>
+
+    @Query("SELECT DISTINCT year FROM doodh ORDER BY year DESC")
+    fun getAllDistinctYears(): Array<Int>
 }
