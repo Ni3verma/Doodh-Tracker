@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.andryoga.doodh.data.db.DoodhDao
 import com.andryoga.doodh.data.db.DoodhEntity
@@ -18,7 +19,9 @@ class DashboardViewModel(
     private val _yearItems = MutableLiveData<Array<Int>>()
     val yearItems: LiveData<Array<Int>> = _yearItems
 
-    val monthItems: LiveData<Array<String>> = MutableLiveData(Constants.MONTH_TEXT)
+    val monthItems: LiveData<Array<String>> = liveData {
+        emit(Constants.MONTH_TEXT)
+    }
 
     private val _recordsOfMonth = MutableLiveData<List<DoodhEntity>>()
     val recordsOfMonth: LiveData<List<DoodhEntity>> = _recordsOfMonth
