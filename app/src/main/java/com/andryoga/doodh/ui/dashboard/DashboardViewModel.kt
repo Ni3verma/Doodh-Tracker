@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.andryoga.doodh.data.db.DoodhDao
 import com.andryoga.doodh.data.db.DoodhEntity
+import com.andryoga.doodh.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -17,28 +18,43 @@ class DashboardViewModel(
     private val _yearItems = MutableLiveData<Array<Int>>()
     val yearItems: LiveData<Array<Int>> = _yearItems
 
+    val monthItems: LiveData<Array<String>> = MutableLiveData(Constants.MONTH_TEXT)
+
     private val _recordsOfMonth = MutableLiveData<List<DoodhEntity>>()
     val recordsOfMonth: LiveData<List<DoodhEntity>> = _recordsOfMonth
 
-    init {
+    private var selectedMonth = Calendar.getInstance().get(Calendar.MONTH)
+    private var selectedYear = Calendar.getInstance().get(Calendar.YEAR)
+
+    fun initVM() {
         viewModelScope.launch(Dispatchers.IO) {
             _yearItems.postValue(
                 doodhDao.getAllDistinctYears()
             )
         }
+
+        getRecords()
     }
 
-    fun getRecords(month: Int, year: Int) {
+    private fun getRecords() {
         viewModelScope.launch(Dispatchers.IO) {
             _recordsOfMonth.postValue(
                 doodhDao.getDoodhRecordsForMonth(
-                    month, year
+                    selectedMonth, selectedYear
                 )
             )
         }
-
     }
 
+    fun updateMonth(newMonth: String) {
+        selectedMonth = Constants.MONTH_TEXT.indexOf(newMonth)
+        getRecords()
+    }
+
+    fun updateYear(newYear: Int) {
+        selectedYear = newYear
+        getRecords()
+    }
 }
 
 class DashboardViewModelFactory(private val doodhDao: DoodhDao) : ViewModelProvider.Factory {

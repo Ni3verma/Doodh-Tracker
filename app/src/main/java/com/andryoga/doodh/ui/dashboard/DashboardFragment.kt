@@ -20,60 +20,62 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
     private val recordAdapter = DoodhRecordAdapter()
 
+    private val dashboardViewModel: DashboardViewModel by viewModels {
+        val application = requireActivity().application as MyApplication
+        DashboardViewModelFactory(application.doodhDao)
+    }
+
+    private var yearItems = arrayOf<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel: DashboardViewModel by viewModels {
-            // Get the DAO from your Application class
-            val application = requireActivity().application as MyApplication
-            DashboardViewModelFactory(application.doodhDao)
-        }
-
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-//        binding.monthTv.setText(
-//            Constants.MONTH_TEXT[Calendar.getInstance().get(Calendar.MONTH)],
-//            false
-//        )
-        binding.monthTv.setSimpleItems(Constants.MONTH_TEXT)
-
-        binding.yearTv.setText(Calendar.getInstance().get(Calendar.YEAR).toString(), false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.records.adapter = recordAdapter
 
-        binding.monthTv.setOnItemClickListener { parent, view, position, id ->
-            val selectedMonth = position
-            val selectedYear = binding.yearTv.text.toString().toInt()
-
-            dashboardViewModel.getRecords(selectedMonth, selectedYear)
+        binding.monthTv.apply {
+            setText(Constants.MONTH_TEXT[Calendar.getInstance().get(Calendar.MONTH)], false)
+            setOnItemClickListener { parent, _, position, _ ->
+                val selectedMonth: String = parent.getItemAtPosition(position).toString()
+                dashboardViewModel.updateMonth(selectedMonth)
+            }
         }
 
-        binding.yearTv.setOnItemClickListener { parent, view, position, id ->
-            val selectedMonth = binding.monthTv.text.toString().toInt()
-            val selectedYear = parent.getItemAtPosition(position).toString().toInt()
-
-            dashboardViewModel.getRecords(selectedMonth, selectedYear)
+        binding.yearTv.apply {
+            setText(Calendar.getInstance().get(Calendar.YEAR).toString(), false)
+            setOnItemClickListener { parent, _, position, _ ->
+                val selectedYear = parent.getItemAtPosition(position).toString().toInt()
+                dashboardViewModel.updateYear(selectedYear)
+            }
         }
 
-        dashboardViewModel.yearItems.observe(viewLifecycleOwner) { items ->
-            binding.yearTv.setSimpleItems(items.map { it.toString() }.toTypedArray())
-        }
+        setObservers()
 
+        dashboardViewModel.initVM()
+    }
+
+    private fun setObservers() {
         dashboardViewModel.recordsOfMonth.observe(viewLifecycleOwner) { records ->
             binding.totalQty.text = "Total Qty: ${records.sumOf { it.qty }} Litres"
             recordAdapter.submitList(records)
         }
 
-        val calendar = Calendar.getInstance()
-        dashboardViewModel.getRecords(
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.YEAR)
-        )
+        dashboardViewModel.yearItems.observe(viewLifecycleOwner) { items ->
+            yearItems = items.map { it.toString() }.toTypedArray()
+            binding.yearTv.setSimpleItems(yearItems)
+        }
 
-        return root
+        dashboardViewModel.monthItems.observe(viewLifecycleOwner) { items ->
+            binding.monthTv.setSimpleItems(items)
+        }
     }
 
     override fun onDestroyView() {
