@@ -3,9 +3,4 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string-array name="items">
-        <item>sdfnsjkf</item>
-        <item>fdf</item>
-        <item>sds</item>
-    </string-array>
 </resources>

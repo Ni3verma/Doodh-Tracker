@@ -43,6 +43,8 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             isMinifyEnabled = false
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "Doodh Tracker (D)")
         }
         release {
             isMinifyEnabled = true
