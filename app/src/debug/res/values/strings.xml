@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">(D) Doodh Tracker</string>
+    <string name="title_home">Home (DEBUG)</string>
+    <string name="title_dashboard">Dashboard (DEBUG)</string>
+</resources>
