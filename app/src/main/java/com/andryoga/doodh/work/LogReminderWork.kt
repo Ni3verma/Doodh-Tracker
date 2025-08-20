@@ -11,15 +11,29 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.andryoga.doodh.MainActivity
+import com.andryoga.doodh.MyApplication
+import kotlinx.coroutines.flow.firstOrNull
+import java.util.Calendar
 
 class LogReminderWork(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams) {
+    CoroutineWorker(appContext, workerParams) {
 
-    override fun doWork(): Result {
-        showNotification("Daily Milk Reminder", "Hey, Did you buy milk today?")
+    override suspend fun doWork(): Result {
+        val calendar = Calendar.getInstance()
+        val entryForToday = (applicationContext as? MyApplication)?.doodhDao?.getDoodhRecordForDay(
+            day = calendar.get(Calendar.DAY_OF_MONTH),
+            month = calendar.get(Calendar.MONTH),
+            year = calendar.get(Calendar.YEAR)
+        )?.firstOrNull()
+        if (entryForToday != null) {
+            // have already logged milk for today, no need to show a reminder notification
+            return Result.success()
+        }
+
+        showNotification("Daily Milk Reminder", "Hey, did you buy milk today?")
         return Result.success()
     }
 
