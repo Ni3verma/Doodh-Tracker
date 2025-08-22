@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         binding.save.setOnClickListener {
             hideKeyboard()
             homeViewModel.onSaveClick(
-                binding.qty.text.toString().toDouble()
+                binding.qty.text.toString().toDoubleOrNull()
             )
         }
 

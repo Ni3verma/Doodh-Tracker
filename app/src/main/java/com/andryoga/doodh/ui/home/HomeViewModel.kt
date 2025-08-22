@@ -38,7 +38,8 @@ class HomeViewModel(
         }
     }
 
-    fun onSaveClick(qty: Double) {
+    fun onSaveClick(qty: Double?) {
+        if (qty == null) return
         viewModelScope.launch(Dispatchers.IO) {
             val date = _currentSelectedDate.value!!
             doodhDao.insertDoodhRecord(DoodhEntity(date.day, date.month, date.year, qty))
